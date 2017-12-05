@@ -30,7 +30,23 @@ def part1(instructions):
 
 # Part 2
 def part2(instructions):
-    pass
+    instructions = [int(x) for x in instructions.splitlines()]
+    steps = 0
+    pointer = 0
+
+    while True:
+        after_jump = pointer + instructions[pointer]
+        if instructions[pointer] >= 3:
+            instructions[pointer] -= 1
+        else:
+            instructions[pointer] += 1
+        pointer = after_jump
+        steps += 1
+
+        if pointer < 0 or pointer >= len(instructions):
+            break
+
+    print('Part 2: Steps to reach the exit: {}'.format(steps))
 
 
 # Do the stuff
