@@ -37,7 +37,29 @@ def part1(instructions):
 
 # Part 2
 def part2(instructions):
-    pass
+    registers = {}
+    highest_ever = 0
+
+    for instruct in instructions.splitlines():
+        instruct_split = [item for item in instruct.split()]
+        instruct_split[1] = "+" if instruct_split[1] == "inc" else "-"
+        if_check = 'if registers[instruct_split[4]] ' + ' '.join(instruct_split[5:])
+        action = 'registers[instruct_split[0]] = registers[instruct_split[0]] ' + ' '.join(instruct_split[1:3])
+        exec_string = if_check + ': ' + action
+        # print(exec_string)
+        if instruct_split[0] not in registers:
+            registers[instruct_split[0]] = 0
+        if instruct_split[4] not in registers:
+            registers[instruct_split[4]] = 0
+        exec(exec_string)
+
+        tmp_high = max(registers.values())
+        if tmp_high > highest_ever:
+            highest_ever = tmp_high
+
+    # pprint.pprint(registers)
+
+    print('Part 2: Largest value ever in any register: {}'.format(highest_ever))
 
 
 # Do the stuff
