@@ -44,7 +44,30 @@ def part1_recurse(village, id, seen):
 
 # Part 2
 def part2(village):
-    pass
+    village = data_to_dict(village)
+    seen = []
+    num_groups = 0
+
+    for key in village:
+        group = part2_recurse(village, key, [])
+        if group[0] not in seen:
+            seen.extend(group)
+            num_groups += 1
+
+    print('Part 2: Number of groups: {}'.format(num_groups))
+
+
+def part2_recurse(village, id, seen):
+    # print('ID: {}; seen: {}; num_programs: {}'.format(id, seen, num_programs))
+    if id in seen:
+        return 0
+
+    seen.append(id)
+
+    for prog in village[id]:
+        tmp = part2_recurse(village, int(prog), seen)
+
+    return seen
 
 
 # Do the stuff
