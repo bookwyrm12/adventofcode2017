@@ -62,7 +62,32 @@ def part1(gen_a, gen_b):
 
 # Part 2
 def part2(gen_a, gen_b):
-    pass
+    print('gen a: {}; gen b: {}'.format(gen_a, gen_b))
+
+    total_rounds = 5000000
+
+    judge = 0
+
+    gen_a_multiples = []
+    gen_b_multiples = []
+
+    while len(gen_a_multiples) < total_rounds:
+        gen_a = get_next_a(gen_a)
+        if gen_a % 4 == 0:
+            gen_a_multiples.append(gen_a)
+
+    while len(gen_b_multiples) < total_rounds:
+        gen_b = get_next_b(gen_b)
+        if gen_b % 8 == 0:
+            gen_b_multiples.append(gen_b)
+
+    for round in range(total_rounds):
+        bin_a = "{0:b}".format(gen_a_multiples[round])
+        bin_b = "{0:b}".format(gen_b_multiples[round])
+        if bin_a[-16:] == bin_b[-16:]:
+            judge += 1
+
+    print('Part 2: Judge\'s final count: {}'.format(judge))
 
 
 # Do the stuff
