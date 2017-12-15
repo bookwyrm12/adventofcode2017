@@ -18,18 +18,28 @@ def get_gen_values(data):
         generators.append(line[-1])
     return int(generators[0]), int(generators[1])
 
-# Helper: Get next values
-def get_next(gen_a, gen_b):
+
+# Helper: Get next value for Generator A
+def get_next_a(gen_a):
     mult_a = 16807
-    mult_b = 48271
     div_by = 2147483647
 
     gen_a *= mult_a
     gen_a %= div_by
+
+    return gen_a
+
+
+# Helper: Get next value for Generator B
+def get_next_b(gen_b):
+    mult_b = 48271
+    div_by = 2147483647
+
     gen_b *= mult_b
     gen_b %= div_by
 
-    return gen_a, gen_b
+    return gen_b
+
 
 # Part 1
 def part1(gen_a, gen_b):
@@ -40,7 +50,8 @@ def part1(gen_a, gen_b):
     judge = 0
 
     for round in range(total_rounds):
-        gen_a, gen_b = get_next(gen_a, gen_b)
+        gen_a = get_next_a(gen_a)
+        gen_b = get_next_b(gen_b)
         bin_a = "{0:b}".format(gen_a)
         bin_b = "{0:b}".format(gen_b)
         if bin_a[-16:] == bin_b[-16:]:
@@ -50,11 +61,11 @@ def part1(gen_a, gen_b):
 
 
 # Part 2
-def part2(data):
+def part2(gen_a, gen_b):
     pass
 
 
 # Do the stuff
 gen_a, gen_b = get_gen_values(data)
 part1(gen_a, gen_b)
-part2(data)
+part2(gen_a, gen_b)
