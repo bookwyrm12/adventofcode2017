@@ -62,7 +62,23 @@ def part1(dance_moves):
 
 # Part 2
 def part2(dance_moves):
-    pass
+    dance_moves = [move for move in dance_moves.split(',')]
+
+    programs = get_intial_program_sequence()
+    seen = []
+    total_dances = 1000000000
+
+    for round in range(total_dances):
+        s = ''.join(programs)
+        if s in seen:
+            programs = seen[(total_dances - round) % len(seen)]
+            break
+        else:
+            programs = do_the_dance(programs, dance_moves)
+            seen.append(s)
+
+    final_order = ''.join(programs)
+    print('Part 2: Final order: {}'.format(final_order))
 
 
 # Do the stuff
