@@ -12,39 +12,41 @@ with open('day16.in') as f:
 
 # Helper: Initialize programs
 def get_intial_program_sequence():
-    sequence = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p']
+    sequence = list('abcdefghijklmnop')
     # sequence = ['a', 'b', 'c', 'd', 'e']
     return sequence
 
 
 # Helper: Do the dance
 def do_the_dance(programs, dance_moves):
+    new_programs = programs[:]
     for move in dance_moves:
         if move[0] == 's': # Spin
             num = int(move[1:])
-            end = programs[-num:]
-            the_rest = programs[:-num]
-            programs = end + the_rest
+            end = new_programs[-num:]
+            the_rest = new_programs[:-num]
+            new_programs = end + the_rest
 
         elif move[0] == 'x': # Exchange
             positions = move[1:].split('/')
             pos_a = int(positions[0])
             pos_b = int(positions[1])
-            a = programs[pos_a]
-            b = programs[pos_b]
-            programs[pos_a] = b
-            programs[pos_b] = a
+            a = new_programs[pos_a]
+            b = new_programs[pos_b]
+            new_programs[pos_a] = b
+            new_programs[pos_b] = a
 
         elif move[0] == 'p': # Partner
             progs = move[1:].split('/')
             a = progs[0]
             b = progs[1]
-            pos_a = programs.index(a)
-            pos_b = programs.index(b)
-            programs[pos_a] = b
-            programs[pos_b] = a
+            pos_a = new_programs.index(a)
+            pos_b = new_programs.index(b)
+            new_programs[pos_a] = b
+            new_programs[pos_b] = a
 
-    return programs
+    return new_programs
+
 
 # Part 1
 def part1(dance_moves):
