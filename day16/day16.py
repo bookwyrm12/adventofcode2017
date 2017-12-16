@@ -17,14 +17,8 @@ def get_intial_program_sequence():
     return sequence
 
 
-# Part 1
-def part1(dance_moves):
-    dance_moves = [move for move in dance_moves.split(',')]
-    print(dance_moves)
-
-    programs = get_intial_program_sequence()
-    total_moves = len(dance_moves)
-
+# Helper: Do the dance
+def do_the_dance(programs, dance_moves):
     for move in dance_moves:
         if move[0] == 's': # Spin
             num = int(move[1:])
@@ -49,6 +43,16 @@ def part1(dance_moves):
             pos_b = programs.index(b)
             programs[pos_a] = b
             programs[pos_b] = a
+
+    return programs
+
+# Part 1
+def part1(dance_moves):
+    dance_moves = [move for move in dance_moves.split(',')]
+    print(dance_moves)
+
+    programs = get_intial_program_sequence()
+    programs = do_the_dance(programs, dance_moves)
 
     final_order = ''.join(programs)
     print('Part 1: Final order: {}'.format(final_order))
