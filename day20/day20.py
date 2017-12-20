@@ -7,6 +7,7 @@
 
 # Imports
 import re
+from collections import defaultdict
 
 
 # Get the data
@@ -53,6 +54,31 @@ def get_closest(position):
     return closest
 
 
+# Helper: Update particles one tick, with destructive collisions
+def tick_update_collision(position, velocity, accel):
+    velocity = [[v + a for v, a in zip(vel, acc)] for vel, acc in zip(velocity, accel)]
+    position = [[p + v for p, v in zip(pos, vel)] for pos, vel in zip(position, velocity)]
+
+    tally = defaultdict(list)
+    for i, pos in enumerate(position):
+        pos = ','.join([str(x) for x in pos])
+        tally[pos].append(i)
+    dupes = [(key, locs) for key, locs in tally.items() if len(locs) > 1]
+
+    if dupes:
+        has_collision = True
+        dupes = [i for sublist in dupes for i in sublist[1]] # flatten list of duplicate indeces
+        dupes.sort(reverse=True) # reverse sort indeces
+        for dupe in dupes:
+            del position[dupe]
+            del velocity[dupe]
+            del accel[dupe]
+    else:
+        has_collision = False
+
+    return position, velocity, accel, has_collision
+
+
 # Part 1
 def part1(position, velocity, accel):
     closest_particle = None
@@ -72,11 +98,22 @@ def part1(position, velocity, accel):
 
 
 # Part 2
-def part2(data):
-    pass
+def part2(position, velocity, accel):
+    counter = 0
+
+    while counter < 1000:
+        print('counter: {}'.format(counter))
+        position, velocity, accel, has_collision = tick_update_collision(position, velocity, accel)
+        if has_collision:
+            counter = 0
+        else:
+            counter += 1
+
+    particles_left = len(position)
+    print('Part 2: Particles left after collisions: {}'.format(particles_left))
 
 
 # Do the stuff
 position, velocity, accel = get_particle_data(data)
 part1(position, velocity, accel)
-part2(data)
+part2(position, velocity, accel)
